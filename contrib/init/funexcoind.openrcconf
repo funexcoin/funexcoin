@@ -1,0 +1,26 @@
+# /etc/conf.d/funexcoind: config file for /etc/init.d/funexcoind
+
+# Config file location
+#BITCOIND_CONFIGFILE="/etc/funexcoin/funexcoin.conf"
+
+# What directory to write pidfile to?  (created and owned by $BITCOIND_USER)
+#BITCOIND_PIDDIR="/var/run/funexcoind"
+
+# What filename to give the pidfile
+#BITCOIND_PIDFILE="${BITCOIND_PIDDIR}/funexcoind.pid"
+
+# Where to write funexcoind data (be mindful that the blockchain is large)
+#BITCOIND_DATADIR="/var/lib/funexcoind"
+
+# User and group to own funexcoind process
+#BITCOIND_USER="funexcoin"
+#BITCOIND_GROUP="funexcoin"
+
+# Path to funexcoind executable
+#BITCOIND_BIN="/usr/bin/funexcoind"
+
+# Nice value to run funexcoind under
+#BITCOIND_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+BITCOIND_OPTS=""
