@@ -42,13 +42,63 @@ describe("FunexCoin", function () {
     });
 
     it("Should not allow others to mint", async function () {
-      const { funexCoin, owner, otherAccount } = await loadFixture(deployFunexCoin);
+      const { funexCoin, otherAccount } = await loadFixture(deployFunexCoin);
       await expect(funexCoin.connect(otherAccount).mint(10000)).to.be.revertedWith("Ownable: caller is not the owner");
     });
   });
 
   describe("Transfer", function () {
-    it("Transfer if you have money")
-  })
+    it("Direct Transfer Tokens", async function () {
+      const { funexCoin, otherAccount } = await loadFixture(deployFunexCoin);
+      let val = BigInt("1000000000000000000");
+      await funexCoin.transfer(otherAccount.address, val);
+      expect(await funexCoin.balanceOf(otherAccount.address)).to.equal(val);
+    });
+
+    it("Direct Transfer Tokens Don't have balance", async function () {
+      const { funexCoin, owner, otherAccount } = await loadFixture(deployFunexCoin);
+      let val = BigInt("1000000000000000000");
+      await expect(funexCoin.connect(otherAccount).transfer(owner.address, val)).to.be.revertedWith("BEP20: transfer amount exceeds balance");
+    });
+  });
+
+  describe("Transfer With Allowance", function () {
+    it("Allowed Transfer Tokens", async function () {
+      const { funexCoin, owner, otherAccount } = await loadFixture(deployFunexCoin);
+      let val = BigInt("1000000000000000000");
+      await funexCoin.approve(otherAccount.address, val);
+      await funexCoin.connect(otherAccount).transferFrom(owner.address, otherAccount.address, val);
+      expect(await funexCoin.balanceOf(otherAccount.address)).to.equal(val);
+    });
+
+    it("Allowed Transfer Tokens Don't have balance", async function () {
+      const { funexCoin, owner, otherAccount } = await loadFixture(deployFunexCoin);
+      let val = BigInt("1000000000000000000");
+      await funexCoin.connect(otherAccount).approve(owner.address, val);
+      await expect(funexCoin.transferFrom(otherAccount.address, owner.address, val)).to.be.revertedWith("BEP20: transfer amount exceeds balance");
+    });
+
+    it("Allowed Transfer Tokens Don't have allowance", async function () {
+      const { funexCoin, owner, otherAccount } = await loadFixture(deployFunexCoin);
+      let val = BigInt("1000000000000000000");
+      await expect(funexCoin.connect(otherAccount).transferFrom(owner.address, otherAccount.address, val)).to.be.revertedWith("BEP20: transfer amount exceeds allowance");
+    });
+  });
+
+  describe("Burning", function () {
+    it("Should allow to burn if have balance", async function () {
+      const { funexCoin, owner, otherAccount } = await loadFixture(deployFunexCoin);
+      let supply = BigInt("50000000000000000000000000");
+      let val = BigInt("1000000000000000000");
+      await funexCoin.burn(val);
+      expect(await funexCoin.balanceOf(owner.address)).to.equal(supply - val);
+    });
+
+    it("Should not allow burn without balance", async function () {
+      const { funexCoin, otherAccount } = await loadFixture(deployFunexCoin);
+      let val = BigInt("1000000000000000000");
+      await expect(funexCoin.connect(otherAccount).burn(val)).to.be.revertedWith("BEP20: burn amount exceeds balance");
+    });
+  });
 
 });
