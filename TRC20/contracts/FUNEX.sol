@@ -8,7 +8,7 @@ contract Funex is TRC20, MinterRole {
     string private _symbol;
     uint8 private _decimals;
 
-    constructor (string name, string symbol, uint8 decimals) public {
+    constructor(string name, string symbol, uint8 decimals) public {
         _name = name;
         _symbol = symbol;
         _decimals = decimals;

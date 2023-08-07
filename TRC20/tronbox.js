@@ -5,6 +5,16 @@ module.exports = {
     mainnet: {
       // Don't put your private key here:
       privateKey: process.env.PRIVATE_KEY_MAINNET,
+      /*
+Create a .env file (it must be gitignored) containing something like
+
+  export PRIVATE_KEY_MAINNET=4E7FEC...656243
+
+Then, run the migration with:
+
+  source .env && tronbox migrate --network mainnet
+
+      */
       userFeePercentage: 100,
       feeLimit: 1000 * 1e6,
       fullHost: 'https://api.trongrid.io',
@@ -20,7 +30,7 @@ module.exports = {
     nile: {
       privateKey: process.env.PRIVATE_KEY_NILE,
       userFeePercentage: 100,
-      feeLimit: 3000 * 1e6,
+      feeLimit: 1000 * 1e6,
       fullHost: 'https://nile.trongrid.io',
       network_id: '3'
     },
@@ -34,16 +44,16 @@ module.exports = {
     },
     compilers: {
       solc: {
-        version: '0.4.24',
+        version: '0.4.24'
       }
     }
   },
   // solc compiler optimize
   solc: {
-    //   optimizer: {
-    //     enabled: true,
-    //     runs: 200
-    //   },
-    //   evmVersion: 'istanbul'
+  //   optimizer: {
+  //     enabled: true,
+  //     runs: 200
+  //   },
+  //   evmVersion: 'istanbul'
   }
 }
